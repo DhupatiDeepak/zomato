@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../redux/cartSlice';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { FaStar } from 'react-icons/fa';
 
@@ -24,9 +27,12 @@ const ProductDetails = () => {
         fetchProduct();
     }, [id]);
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const addToCartHandler = () => {
-        // Logic to add to cart (Redux)
-        console.log('Add to cart:', product.name, qty);
+        dispatch(addToCart({ ...product, product: product._id, qty }));
+        toast.success(`${product.name} added to cart`, { position: "bottom-center" });
     };
 
     if (loading) return <div className="text-center py-10">Loading...</div>;

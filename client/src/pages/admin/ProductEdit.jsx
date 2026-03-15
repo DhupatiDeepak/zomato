@@ -44,21 +44,19 @@ const ProductEdit = () => {
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             };
-            // Need upload route! For now we can assume local or just text input for URL.
-            // Plan says Cloudinary. I need to implement upload route. 
-            // I'll skip implementation of upload route for now and stick to text input for URL to keep it simple, 
-            // or I can implement sidebar upload if user provided it.
-            // User roadmap said: "Image Upload System Use: Cloudinary". 
-            // Implementing Cloudinary upload is complex without credentials.
-            // I'll leave it as URL input for now, but provide the UI for file upload that does nothing or errors.
-            // Actually, I'll just let them input URL.
+
+            const { data } = await axios.post('http://localhost:5000/api/upload', formData, config);
+
+            setImage(data.image);
             setUploading(false);
-            toast.info('Image upload requires backend configuration. Please enter URL manually for now.');
+            toast.success('Image uploaded successfully');
         } catch (error) {
             console.error(error);
             setUploading(false);
+            toast.error('Error uploading image');
         }
     };
 
@@ -66,7 +64,10 @@ const ProductEdit = () => {
         e.preventDefault();
         try {
             const config = {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}` 
+                },
             };
             await axios.put(`http://localhost:5000/api/products/${id}`, {
                 name, price, image, brand, category, countInStock, description
@@ -74,7 +75,7 @@ const ProductEdit = () => {
             toast.success('Product Updated');
             navigate('/admin/productlist');
         } catch (error) {
-            toast.error('Error updating product');
+            toast.error(error.response?.data?.message || 'Error updating product');
         }
     };
 
@@ -94,8 +95,12 @@ const ProductEdit = () => {
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700">Image</label>
-                        <input type="text" value={image} onChange={(e) => setImage(e.target.value)} className="w-full border p-2 rounded mb-2" />
-                        {/* <input type="file" onChange={uploadFileHandler} className="w-full" /> */}
+                        <div className="flex items-center gap-4 mb-2">
+                            {image && <img src={image} alt="Preview" className="w-16 h-16 object-cover rounded" />}
+                            <input type="text" value={image} onChange={(e) => setImage(e.target.value)} className="flex-grow border p-2 rounded" />
+                        </div>
+                        <input type="file" onChange={uploadFileHandler} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-red-700" />
+                        {uploading && <p className="text-xs text-secondary mt-1">Uploading...</p>}
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700">Brand</label>

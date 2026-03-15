@@ -18,6 +18,7 @@ import ProductEdit from './pages/admin/ProductEdit';
 import OrderList from './pages/admin/OrderList';
 
 import Profile from './pages/Profile';
+import Wishlist from './pages/Wishlist';
 
 import ScrollToTop from './components/ScrollToTop';
 
@@ -25,7 +26,7 @@ function App() {
     return (
         <Router>
             <ScrollToTop />
-            <div className="min-h-screen bg-gray-50 flex flex-col">
+            <div className="min-h-screen bg-dark text-light flex flex-col">
                 <Header />
                 <main className="flex-grow">
                     <Routes>
@@ -38,6 +39,7 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/profile" element={<Profile />} />
+                        <Route path="/wishlist" element={<Wishlist />} />
 
                         {/* Admin Routes */}
                         <Route path="/admin/productlist" element={<ProductList />} />

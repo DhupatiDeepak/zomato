@@ -7,11 +7,11 @@ export default {
     theme: {
         extend: {
             colors: {
-                primary: '#D32F2F', // Darker richer red
-                secondary: '#FBC02D', // Gold/Yellow for accents
-                dark: '#212121',
+                primary: '#b91c1c', // Spicy Red
+                secondary: '#fbbf24', // Amber/Gold
+                accent: '#065f46', // Deep Emerald
+                dark: '#111827', // Rich Black
                 light: '#FAFAFA',
-                accent: '#FF5722', // Burnt orange
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],

@@ -25,10 +25,16 @@ app.use(limiter);
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 
 app.use('/api/users', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/upload', uploadRoutes);
+
+import path from 'path';
+const __dirname = path.resolve();
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // Routes Placeholder
 app.get('/', (req, res) => {
@@ -37,12 +43,16 @@ app.get('/', (req, res) => {
 
 // Database Connection
 mongoose
-    .connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+    .connect(process.env.MONGO_URI)
+    .then(() => {
+        console.log('MongoDB Connected');
+        const uri = process.env.MONGO_URI || '';
+        console.log('Using URI:', uri.includes('@') ? '***@' + uri.split('@')[1] : uri);
     })
-    .then(() => console.log('MongoDB Connected'))
-    .catch((err) => console.log(err));
+    .catch((err) => {
+        console.log('MongoDB Connection Error:', err.message);
+        console.log('Attempted URI:', process.env.MONGO_URI);
+    });
 
 // Razorpay config route
 app.get('/api/config/razorpay', (req, res) => {

@@ -5,6 +5,7 @@ import { addToCart } from '../redux/cartSlice';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
+import SkeletonCard from '../components/Skeleton';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
@@ -17,12 +18,19 @@ const Shop = () => {
 
     useEffect(() => {
         const fetchProducts = async () => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
+
             try {
-                const { data } = await axios.get('http://localhost:5000/api/products');
+                const { data } = await axios.get('http://localhost:5000/api/products', {
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
                 setProducts(data);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching products:', error);
+                setProducts(dummyData); // Fallback to dummy data on error or timeout
                 setLoading(false);
             }
         };
@@ -41,7 +49,7 @@ const Shop = () => {
         {
             _id: 'd1',
             name: 'Mango Avakaya',
-            image: 'https://images.unsplash.com/photo-1599305090598-fe179d501227?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 250,
             category: 'Veg Pickles',
             rating: 4.5,
@@ -50,7 +58,7 @@ const Shop = () => {
         {
             _id: 'd2',
             name: 'Gongura Pickle',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 220,
             category: 'Veg Pickles',
             rating: 4.8,
@@ -59,7 +67,7 @@ const Shop = () => {
         {
             _id: 'd3',
             name: 'Cut Mango Pickle',
-            image: 'https://images.unsplash.com/photo-1599305090598-fe179d501227?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 240,
             category: 'Veg Pickles',
             rating: 4.2,
@@ -68,7 +76,7 @@ const Shop = () => {
         {
             _id: 'd4',
             name: 'Tomato Pickle',
-            image: 'https://images.unsplash.com/photo-1606927958988-cb5436336a5b?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 200,
             category: 'Veg Pickles',
             rating: 4.6,
@@ -77,7 +85,7 @@ const Shop = () => {
         {
             _id: 'd5',
             name: 'Chicken Pickle (Boneless)',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/chicken_dummy.png',
             price: 550,
             category: 'Non-Veg Pickles',
             rating: 4.9,
@@ -86,7 +94,7 @@ const Shop = () => {
         {
             _id: 'd6',
             name: 'Prawns Pickle',
-            image: 'https://images.unsplash.com/photo-1599305090598-fe179d501227?w=500&q=80',
+            image: '/images/chicken_dummy.png',
             price: 650,
             category: 'Non-Veg Pickles',
             rating: 4.7,
@@ -95,7 +103,7 @@ const Shop = () => {
         {
             _id: 'd7',
             name: 'Mutton Pickle',
-            image: 'https://images.unsplash.com/photo-1606927958988-cb5436336a5b?w=500&q=80',
+            image: '/images/chicken_dummy.png',
             price: 750,
             category: 'Non-Veg Pickles',
             rating: 4.8,
@@ -104,7 +112,7 @@ const Shop = () => {
         {
             _id: 'd8',
             name: 'Fish Pickle',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/chicken_dummy.png',
             price: 450,
             category: 'Non-Veg Pickles',
             rating: 4.3,
@@ -113,7 +121,7 @@ const Shop = () => {
         {
             _id: 'd9',
             name: 'Kandi Podi',
-            image: 'https://images.unsplash.com/photo-1596450632360-1e5446002f2d?w=500&q=80',
+            image: '/images/podis_dummy.png',
             price: 180,
             category: 'Podis',
             rating: 4.5,
@@ -122,7 +130,7 @@ const Shop = () => {
         {
             _id: 'd10',
             name: 'Karivepaku Podi',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/podis_dummy.png',
             price: 190,
             category: 'Podis',
             rating: 4.6,
@@ -131,7 +139,7 @@ const Shop = () => {
         {
             _id: 'd11',
             name: 'Nalla Karam',
-            image: 'https://images.unsplash.com/photo-1596450632360-1e5446002f2d?w=500&q=80',
+            image: '/images/podis_dummy.png',
             price: 170,
             category: 'Podis',
             rating: 4.4,
@@ -140,7 +148,7 @@ const Shop = () => {
         {
             _id: 'd12',
             name: 'Idli Karam',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/podis_dummy.png',
             price: 160,
             category: 'Podis',
             rating: 4.7,
@@ -148,8 +156,8 @@ const Shop = () => {
         },
         {
             _id: 'd13',
-            name: 'Ariselu (Ghee)',
-            image: 'https://images.unsplash.com/photo-1605151600889-72f87a827448?w=500&q=80',
+            name: 'Authentic Laddus',
+            image: '/images/sweets_dummy.png',
             price: 400,
             category: 'Sweets',
             rating: 4.8,
@@ -157,8 +165,8 @@ const Shop = () => {
         },
         {
             _id: 'd14',
-            name: 'Pootharekulu',
-            image: 'https://images.unsplash.com/photo-1702482387183-5a2133464528?w=500&q=80',
+            name: 'Gulabilu',
+            image: '/images/sweets_dummy.png',
             price: 500,
             category: 'Sweets',
             rating: 4.9,
@@ -167,7 +175,7 @@ const Shop = () => {
         {
             _id: 'd15',
             name: 'Sunnundalu',
-            image: 'https://images.unsplash.com/photo-1605151600889-72f87a827448?w=500&q=80',
+            image: '/images/sweets_dummy.png',
             price: 350,
             category: 'Sweets',
             rating: 4.6,
@@ -176,7 +184,7 @@ const Shop = () => {
         {
             _id: 'd16',
             name: 'Kaja',
-            image: 'https://images.unsplash.com/photo-1702482387183-5a2133464528?w=500&q=80',
+            image: '/images/sweets_dummy.png',
             price: 320,
             category: 'Sweets',
             rating: 4.5,
@@ -184,8 +192,8 @@ const Shop = () => {
         },
         {
             _id: 'd17',
-            name: 'Chekkalu',
-            image: 'https://images.unsplash.com/photo-1605151600889-72f87a827448?w=500&q=80',
+            name: 'Handcrafted Chekkalu',
+            image: '/images/brown_chekarlu.png',
             price: 250,
             category: 'Hot Snacks',
             rating: 4.7,
@@ -193,8 +201,8 @@ const Shop = () => {
         },
         {
             _id: 'd18',
-            name: 'Murukulu',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            name: 'Red Chakralu',
+            image: '/images/red_chakralu.png',
             price: 240,
             category: 'Hot Snacks',
             rating: 4.6,
@@ -202,17 +210,26 @@ const Shop = () => {
         },
         {
             _id: 'd19',
-            name: 'Janthikalu',
-            image: 'https://images.unsplash.com/photo-1605151600889-72f87a827448?w=500&q=80',
+            name: 'Traditional Chekkis',
+            image: '/images/chekkis.png',
             price: 230,
             category: 'Hot Snacks',
             rating: 4.5,
             numReviews: 15
         },
         {
+            _id: 'd19b',
+            name: 'Classic Godavari Chekarlu',
+            image: '/images/laddus.png',
+            price: 260,
+            category: 'Hot Snacks',
+            rating: 4.8,
+            numReviews: 18
+        },
+        {
             _id: 'd20',
             name: 'Saggubiyyam Vadiyalu',
-            image: 'https://images.unsplash.com/photo-1596450632360-1e5446002f2d?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 300,
             category: 'Vadiyalu',
             rating: 4.8,
@@ -221,7 +238,7 @@ const Shop = () => {
         {
             _id: 'd21',
             name: 'Minapa Vadiyalu',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 280,
             category: 'Vadiyalu',
             rating: 4.7,
@@ -250,22 +267,23 @@ const Shop = () => {
     const displayProducts = getFilteredProducts();
 
     return (
-        <div className="container mx-auto px-4 py-12">
-            <h1 className="text-3xl font-serif font-bold text-gray-900 mb-8 uppercase text-center">
-                {categoryFilter ? `${categoryFilter}` : 'All Products'}
-            </h1>
+        <div className="bg-dark min-h-screen py-12">
+            <div className="container mx-auto px-4">
+                <h1 className="text-4xl font-serif font-black text-light mb-12 uppercase text-center tracking-tighter">
+                    {categoryFilter ? `${categoryFilter}` : 'All Products'}
+                </h1>
 
-            {loading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map(i => <div key={i} className="h-80 bg-gray-100 animate-pulse rounded-lg"></div>)}
-                </div>
-            ) : (
-                <>
-                    {displayProducts.length === 0 ? (
-                        <div className="text-center py-20">
-                            <h2 className="text-2xl text-gray-600">No products found in this category.</h2>
-                        </div>
-                    ) : (
+                {loading ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+                        {[1, 2, 3, 4, 5, 6, 7, 8].map(i => <SkeletonCard key={i} />)}
+                    </div>
+                ) : (
+                    <>
+                        {displayProducts.length === 0 ? (
+                            <div className="text-center py-20">
+                                <h2 className="text-2xl text-gray-500 font-bold uppercase tracking-widest">No products found.</h2>
+                            </div>
+                        ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                             {displayProducts.map((product) => (
                                 <ProductCard
@@ -278,6 +296,7 @@ const Shop = () => {
                     )}
                 </>
             )}
+            </div>
         </div>
     );
 };

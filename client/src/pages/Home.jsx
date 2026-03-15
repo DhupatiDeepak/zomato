@@ -5,28 +5,77 @@ import { addToCart } from '../redux/cartSlice';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
+import SkeletonCard from '../components/Skeleton';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentSlide, setCurrentSlide] = useState(0);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { cartItems } = useSelector((state) => state.cart);
 
     useEffect(() => {
         const fetchProducts = async () => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
+
             try {
-                const { data } = await axios.get('http://localhost:5000/api/products');
+                const { data } = await axios.get('http://localhost:5000/api/products', {
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
                 setProducts(data);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching products:', error);
+                setProducts(dummyData); // Fallback to dummy data on error or timeout
                 setLoading(false);
             }
         };
 
         fetchProducts();
     }, []);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % slides.length);
+        }, 6000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const slides = [
+        {
+            image: '/images/hero.png',
+            subtitle: 'Est. 1995 • Handcrafted Tradition',
+            title: 'SPICY PERFECTION',
+            description: 'Experience the raw, unadulterated flavors of Godavari. Made with sun-dried ingredients and time-honored family secrets.'
+        },
+        {
+            image: '/images/veg_pickles.png',
+            subtitle: 'Grandmother\'s Recipes',
+            title: 'VEG DELIGHTS',
+            description: 'From stone-ground Gongura to classic Mango Avakaya, rediscover the taste of home in every bite.'
+        },
+        {
+            image: '/images/non_veg_pickles.png',
+            subtitle: 'Premium Selection',
+            title: 'MEATY BLISS',
+            description: 'Succulent pieces of chicken and mutton marinated in artisan spices. A gourmet non-veg experience like no other.'
+        },
+        {
+            image: '/images/spread.png',
+            subtitle: 'The Full Feast',
+            title: 'GOURMET SPREAD',
+            description: 'Explore our complete collection of authentic Andhra powders, pickles, and traditional sweets.'
+        },
+        {
+            image: '/images/laddus.png',
+            subtitle: 'Sweet Endings',
+            title: 'SWEET HERITAGE',
+            description: 'Hand-rolled Sunnundalu and Ghee Ariselu. Pure, festive flavors delivered right to your doorstep.'
+        }
+    ];
 
     const handleAddToCart = (e, product) => {
         e.preventDefault(); // Prevent navigation to product details
@@ -41,7 +90,7 @@ const Home = () => {
         {
             _id: 'd1',
             name: 'Mango Avakaya',
-            image: 'https://images.unsplash.com/photo-1599305090598-fe179d501227?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 250,
             category: 'Veg Pickles',
             rating: 4.5,
@@ -50,7 +99,7 @@ const Home = () => {
         {
             _id: 'd2',
             name: 'Gongura Pickle',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 220,
             category: 'Veg Pickles',
             rating: 4.8,
@@ -59,7 +108,7 @@ const Home = () => {
         {
             _id: 'd3',
             name: 'Cut Mango Pickle',
-            image: 'https://images.unsplash.com/photo-1599305090598-fe179d501227?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 240,
             category: 'Veg Pickles',
             rating: 4.2,
@@ -68,7 +117,7 @@ const Home = () => {
         {
             _id: 'd4',
             name: 'Tomato Pickle',
-            image: 'https://images.unsplash.com/photo-1606927958988-cb5436336a5b?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 200,
             category: 'Veg Pickles',
             rating: 4.6,
@@ -78,7 +127,7 @@ const Home = () => {
         {
             _id: 'd5',
             name: 'Chicken Pickle (Boneless)',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/chicken_dummy.png',
             price: 550,
             category: 'Non-Veg Pickles',
             rating: 4.9,
@@ -87,7 +136,7 @@ const Home = () => {
         {
             _id: 'd6',
             name: 'Prawns Pickle',
-            image: 'https://images.unsplash.com/photo-1599305090598-fe179d501227?w=500&q=80',
+            image: '/images/chicken_dummy.png',
             price: 650,
             category: 'Non-Veg Pickles',
             rating: 4.7,
@@ -96,7 +145,7 @@ const Home = () => {
         {
             _id: 'd7',
             name: 'Mutton Pickle',
-            image: 'https://images.unsplash.com/photo-1606927958988-cb5436336a5b?w=500&q=80',
+            image: '/images/chicken_dummy.png',
             price: 750,
             category: 'Non-Veg Pickles',
             rating: 4.8,
@@ -105,7 +154,7 @@ const Home = () => {
         {
             _id: 'd8',
             name: 'Fish Pickle',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/chicken_dummy.png',
             price: 450,
             category: 'Non-Veg Pickles',
             rating: 4.3,
@@ -115,7 +164,7 @@ const Home = () => {
         {
             _id: 'd9',
             name: 'Kandi Podi',
-            image: 'https://images.unsplash.com/photo-1596450632360-1e5446002f2d?w=500&q=80',
+            image: '/images/podis_dummy.png',
             price: 180,
             category: 'Podis',
             rating: 4.5,
@@ -124,7 +173,7 @@ const Home = () => {
         {
             _id: 'd10',
             name: 'Karivepaku Podi',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/podis_dummy.png',
             price: 190,
             category: 'Podis',
             rating: 4.6,
@@ -133,7 +182,7 @@ const Home = () => {
         {
             _id: 'd11',
             name: 'Nalla Karam',
-            image: 'https://images.unsplash.com/photo-1596450632360-1e5446002f2d?w=500&q=80',
+            image: '/images/podis_dummy.png',
             price: 170,
             category: 'Podis',
             rating: 4.4,
@@ -142,7 +191,7 @@ const Home = () => {
         {
             _id: 'd12',
             name: 'Idli Karam',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/podis_dummy.png',
             price: 160,
             category: 'Podis',
             rating: 4.7,
@@ -151,8 +200,8 @@ const Home = () => {
         // Sweets
         {
             _id: 'd13',
-            name: 'Ariselu (Ghee)',
-            image: 'https://images.unsplash.com/photo-1605151600889-72f87a827448?w=500&q=80',
+            name: 'Authentic Laddus',
+            image: '/images/sweets_dummy.png',
             price: 400,
             category: 'Sweets',
             rating: 4.8,
@@ -160,8 +209,8 @@ const Home = () => {
         },
         {
             _id: 'd14',
-            name: 'Pootharekulu',
-            image: 'https://images.unsplash.com/photo-1702482387183-5a2133464528?w=500&q=80',
+            name: 'Gulabilu',
+            image: '/images/sweets_dummy.png',
             price: 500,
             category: 'Sweets',
             rating: 4.9,
@@ -170,7 +219,7 @@ const Home = () => {
         {
             _id: 'd15',
             name: 'Sunnundalu',
-            image: 'https://images.unsplash.com/photo-1605151600889-72f87a827448?w=500&q=80',
+            image: '/images/sweets_dummy.png',
             price: 350,
             category: 'Sweets',
             rating: 4.6,
@@ -179,7 +228,7 @@ const Home = () => {
         {
             _id: 'd16',
             name: 'Kaja',
-            image: 'https://images.unsplash.com/photo-1702482387183-5a2133464528?w=500&q=80',
+            image: '/images/sweets_dummy.png',
             price: 320,
             category: 'Sweets',
             rating: 4.5,
@@ -188,8 +237,8 @@ const Home = () => {
         // Hot Snacks
         {
             _id: 'd17',
-            name: 'Chekkalu',
-            image: 'https://images.unsplash.com/photo-1605151600889-72f87a827448?w=500&q=80',
+            name: 'Handcrafted Chekkalu',
+            image: '/images/brown_chekarlu.png',
             price: 250,
             category: 'Hot Snacks',
             rating: 4.7,
@@ -197,8 +246,8 @@ const Home = () => {
         },
         {
             _id: 'd18',
-            name: 'Murukulu',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            name: 'Red Chakralu',
+            image: '/images/red_chakralu.png',
             price: 240,
             category: 'Hot Snacks',
             rating: 4.6,
@@ -206,18 +255,27 @@ const Home = () => {
         },
         {
             _id: 'd19',
-            name: 'Janthikalu',
-            image: 'https://images.unsplash.com/photo-1605151600889-72f87a827448?w=500&q=80',
+            name: 'Traditional Chekkis',
+            image: '/images/chekkis.png',
             price: 230,
             category: 'Hot Snacks',
             rating: 4.5,
             numReviews: 15
         },
+        {
+            _id: 'd19b',
+            name: 'Classic Godavari Chekarlu',
+            image: '/images/brown_chekarlu.png',
+            price: 260,
+            category: 'Hot Snacks',
+            rating: 4.8,
+            numReviews: 18
+        },
         // Vadiyalu
         {
             _id: 'd20',
             name: 'Saggubiyyam Vadiyalu',
-            image: 'https://images.unsplash.com/photo-1596450632360-1e5446002f2d?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 300,
             category: 'Vadiyalu',
             rating: 4.8,
@@ -226,7 +284,7 @@ const Home = () => {
         {
             _id: 'd21',
             name: 'Minapa Vadiyalu',
-            image: 'https://images.unsplash.com/photo-1626202158925-5674c0c16b67?w=500&q=80',
+            image: '/images/mango_dummy.png',
             price: 280,
             category: 'Vadiyalu',
             rating: 4.7,
@@ -258,103 +316,174 @@ const Home = () => {
 
 
     return (
-        <div className="bg-white min-h-screen pb-20 relative">
-            {/* 1. Hero Section - Full Width Banner */}
-            <div className="relative w-full h-[500px] bg-gray-900 overflow-hidden">
-                <img
-                    src="https://images.unsplash.com/photo-1626202158925-5674c0c16b67?q=80&w=2070&auto=format&fit=crop"
-                    alt="Authentic Pickles"
-                    className="w-full h-full object-cover opacity-60"
-                />
-                <div className="absolute inset-0 flex flex-col justify-center items-end pr-10 md:pr-32 text-white">
-                    <h2 className="text-xl md:text-2xl font-light tracking-widest mb-2 uppercase">Authentic & Homemade</h2>
-                    <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-right leading-tight">
-                        NON - VEG PICKLES <br />
-                        <span className="text-xl md:text-2xl font-sans font-normal mt-4 block normal-case opacity-90">
-                            Taste the tradition of Andhra with our <br />premium collection
-                        </span>
-                    </h1>
-                    <button className="bg-primary hover:bg-red-700 text-white px-8 py-3 rounded-sm font-bold tracking-wider uppercase transition">
-                        Shop Now
-                    </button>
+        <div className="bg-dark min-h-screen pb-20 relative">
+            {/* 1. Hero Section - Premium Cinematic Slideshow */}
+            <div className="relative w-full h-[650px] bg-dark overflow-hidden group">
+                {slides.map((slide, index) => (
+                    <div
+                        key={index}
+                        className={`absolute inset-0 transition-all duration-[1500ms] ease-in-out ${
+                            index === currentSlide ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-110 rotate-1'
+                        }`}
+                    >
+                        <img
+                            src={slide.image}
+                            alt={slide.title}
+                            className="w-full h-full object-cover opacity-60"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/40 to-transparent"></div>
+                        
+                        <div className="absolute inset-0 flex flex-col justify-center items-center px-4 text-center text-white">
+                            <div className={`overflow-hidden mb-4 transition-all duration-1000 delay-300 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                                <h2 className="text-secondary text-base md:text-lg font-black tracking-[0.4em] uppercase">
+                                    {slide.subtitle}
+                                </h2>
+                            </div>
+                            
+                            <div className={`overflow-hidden mb-6 transition-all duration-1000 delay-500 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
+                                <h1 className="text-6xl md:text-9xl font-serif font-black leading-[0.8] tracking-tighter uppercase">
+                                    {slide.title.split(' ')[0]} <br />
+                                    <span className="text-secondary italic">{slide.title.split(' ')[1]}</span>
+                                </h1>
+                            </div>
+                            
+                            <div className={`max-w-2xl mb-12 transition-all duration-1000 delay-700 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                                <p className="text-gray-300 text-lg md:text-xl leading-relaxed font-medium">
+                                    {slide.description}
+                                </p>
+                            </div>
+                            
+                            <div className={`flex gap-6 transition-all duration-1000 delay-1000 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                                <button className="bg-white text-dark hover:bg-secondary hover:text-dark px-12 py-5 rounded-full font-black text-xs tracking-widest transition-all duration-300 shadow-2xl hover:shadow-secondary/40 active:scale-95 uppercase">
+                                    Shop Collection
+                                </button>
+                                <button className="border-2 border-white/30 hover:border-white text-white px-12 py-5 rounded-full font-black text-xs tracking-widest transition-all duration-300 active:scale-95 uppercase backdrop-blur-md">
+                                    Our Legacy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+
+                {/* Slide Indicators */}
+                <div className="absolute bottom-12 right-12 z-20 flex gap-4">
+                    {slides.map((_, i) => (
+                        <button
+                            key={i}
+                            onClick={() => setCurrentSlide(i)}
+                            className={`h-1.5 transition-all duration-500 rounded-full ${
+                                i === currentSlide ? 'w-12 bg-secondary' : 'w-4 bg-white/20 hover:bg-white/40'
+                            }`}
+                        />
+                    ))}
+                </div>
+
+                <div className="absolute bottom-12 left-12 hidden md:flex gap-10 z-20">
+                   <div className="flex flex-col">
+                       <span className="text-secondary font-black text-3xl">100%</span>
+                       <span className="text-gray-400 text-[10px] uppercase font-black tracking-[0.3em]">Pure Natural</span>
+                   </div>
+                   <div className="w-[1px] h-12 bg-white/10"></div>
+                   <div className="flex flex-col">
+                       <span className="text-secondary font-black text-3xl">25+</span>
+                       <span className="text-gray-400 text-[10px] uppercase font-black tracking-[0.3em]">Ancient Recipes</span>
+                   </div>
                 </div>
             </div>
 
-            {/* 2. Top Categories Section */}
-            <div className="container mx-auto px-4 py-12">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold text-gray-800">Top categories</h2>
-                    <a href="/shop" className="text-sm font-bold text-gray-500 hover:text-primary uppercase">View all &rarr;</a>
+            {/* 2. Top Categories Section - Premium Circles */}
+            <div className="container mx-auto px-4 py-20">
+                <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+                    <div>
+                        <h2 className="text-3xl font-serif font-black text-light mb-2 tracking-tighter uppercase">Taste Categories</h2>
+                        <div className="h-1.5 w-20 bg-primary"></div>
+                    </div>
+                    <a href="/shop" className="text-xs font-black text-gray-500 hover:text-primary uppercase tracking-[0.2em] transition-colors border-b-2 border-transparent hover:border-primary pb-1">
+                        Explore All Collections &rarr;
+                    </a>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6 text-center">
-                    {['Veg Pickles', 'Non-Veg Pickles', 'Dry Non-Veg Items', 'Hot Snacks', 'Sweets', 'Podis', 'Vadiyalu'].map((cat, idx) => (
-                        <Link key={idx} to={`/shop?category=${encodeURIComponent(cat)}`} className="group cursor-pointer block">
-                            <div className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full overflow-hidden mb-3 border-2 border-transparent group-hover:border-primary transition shadow-sm">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
+                    {[
+                        { name: 'Veg Pickles', img: '/images/veg_pickles.png' },
+                        { name: 'Non-Veg Pickles', img: '/images/non_veg_pickles.png' },
+                        { name: 'Podis', img: '/images/podis.png' },
+                        { name: 'Sweets', img: '/images/laddus.png' },
+                        { name: 'Hot Snacks', img: '/images/brown_chekarlu.png' },
+                        { name: 'Vadiyalu', img: '/images/vadiyalu_category.png' }
+                    ].map((cat, idx) => (
+                        <Link key={idx} to={`/shop?category=${encodeURIComponent(cat.name)}`} className="group cursor-pointer block text-center">
+                            <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full overflow-hidden mb-5 border-4 border-white/5 shadow-2xl group-hover:shadow-primary/40 transition-all duration-500 transform group-hover:-translate-y-2">
                                 <img
-                                    src={`https://source.unsplash.com/random/150x150?food,${cat.split(' ')[0]}`}
-                                    // Fallback if unsplash source is flaky, effectively a placeholder for now
-                                    onError={(e) => e.target.src = 'https://via.placeholder.com/150?text=' + cat.charAt(0)}
-                                    alt={cat}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                                    src={cat.img}
+                                    alt={cat.name}
+                                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
                                 />
+                                <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                             </div>
-                            <h3 className="text-xs md:text-sm font-bold text-gray-700 group-hover:text-primary uppercase tracking-wide">{cat}</h3>
+                            <h3 className="text-xs md:text-sm font-black text-light group-hover:text-primary uppercase tracking-widest transition-colors">{cat.name}</h3>
+                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter mt-1 opacity-0 group-hover:opacity-100 transition-opacity">View Products</p>
                         </Link>
                     ))}
                 </div>
             </div>
 
-            {/* 3. Featured Product Section (Chicken Avakaya) */}
-            <div className="bg-gray-50 py-16">
+            {/* 3. Featured Product Section (Chicken Avakaya) - Modern Card */}
+            <div className="bg-dark/40 py-24">
                 <div className="container mx-auto px-4">
-                    <div className="flex justify-between items-center mb-8">
-                        <h2 className="text-2xl font-bold text-gray-800">Chicken avakai from andhra</h2>
-                        <a href="/product/chicken-avakai" className="text-sm font-bold text-gray-500 hover:text-primary uppercase">View all &rarr;</a>
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+                        <div>
+                            <h2 className="text-3xl font-serif font-black text-light mb-2 tracking-tighter uppercase">Signature Delicacy</h2>
+                            <div className="h-1.5 w-20 bg-primary"></div>
+                        </div>
+                        <a href="/product/chicken-avakai" className="text-xs font-black text-gray-500 hover:text-primary uppercase tracking-[0.2em] transition-colors border-b-2 border-transparent hover:border-primary pb-1">
+                            Discover More &rarr;
+                        </a>
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div className="bg-dark/60 rounded-[2rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] border border-white/5 overflow-hidden backdrop-blur-sm">
                         <div className="flex flex-col md:flex-row">
-                            <div className="md:w-1/2 h-80 md:h-[450px] relative">
+                            <div className="md:w-1/2 h-96 md:h-[550px] relative group">
                                 <img
-                                    src="https://images.unsplash.com/photo-1599305090598-fe179d501227?w=800&auto=format&fit=crop&q=60"
+                                    src="/images/non_veg_pickles.png"
                                     alt="Chicken Avakai"
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
-                                <div className="absolute top-4 left-4">
-                                    {/* Any badge */}
+                                <div className="absolute top-8 left-8">
+                                    <span className="bg-primary text-white text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-[0.2em] shadow-xl">
+                                        Chef's Choice
+                                    </span>
                                 </div>
-                            </div>
-                            <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                                <h3 className="text-3xl font-serif font-bold text-gray-900 mb-2">Chicken Avakai From Andhra</h3>
-                                <div className="flex items-center gap-3 mb-6">
-                                    <span className="text-2xl font-bold text-primary">₹349</span>
-                                    <span className="text-gray-400 line-through">₹499</span>
-                                    <span className="text-green-600 text-sm font-bold bg-green-50 px-2 py-1 rounded">30% OFF</span>
+                            </div>                            <div className="md:w-1/2 p-10 md:p-20 flex flex-col justify-center bg-dark/20 backdrop-blur-sm">
+                                <h3 className="text-4xl md:text-5xl font-serif font-black text-light mb-4 leading-tight tracking-tighter">Chicken Avakai <br /><span className="text-primary italic">From Andhra</span></h3>
+                                <div className="flex items-center gap-4 mb-8">
+                                    <span className="text-4xl font-black text-light">₹349</span>
+                                    <span className="text-lg text-gray-500 line-through font-medium">₹499</span>
+                                    <span className="text-primary text-xs font-black bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-full uppercase tracking-wider">30% OFF</span>
                                 </div>
 
-                                <p className="text-gray-600 mb-8 leading-relaxed">
-                                    Experience the authentic spicy punch of Godavari Chicken Avakai. Made with premium chicken chunks, traditional spices, and cold-pressed groundnut oil. A must-try delicacy!
+                                <p className="text-gray-400 mb-10 leading-relaxed font-medium text-lg italic">
+                                    "Experience the authentic spicy punch of Godavari Chicken Avakai. Made with premium chicken chunks, traditional spices, and cold-pressed groundnut oil."
                                 </p>
 
-                                <div className="flex flex-col sm:flex-row gap-4">
-                                    <div className="border border-gray-300 rounded flex items-center justify-between px-4 py-2 w-32">
-                                        <button className="text-gray-500 hover:text-primary">-</button>
-                                        <span className="font-bold text-gray-800">1</span>
-                                        <button className="text-gray-500 hover:text-primary">+</button>
+                                <div className="flex flex-col sm:flex-row gap-6">
+                                    <div className="bg-white/5 border border-white/10 rounded-full flex items-center justify-between px-6 py-4 w-40">
+                                        <button className="text-gray-500 hover:text-primary font-black transition-colors">-</button>
+                                        <span className="font-black text-light">1 KG</span>
+                                        <button className="text-gray-400 hover:text-primary font-black transition-colors">+</button>
                                     </div>
                                     <button
-                                        className="bg-black hover:bg-gray-800 text-white px-8 py-3 rounded-sm font-bold uppercase tracking-wider transition flex-grow sm:flex-grow-0"
+                                        className="bg-primary hover:bg-red-700 text-white px-12 py-4 rounded-full font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-300 shadow-2xl shadow-primary/20 active:scale-95 flex-grow sm:flex-grow-0"
                                         onClick={(e) => handleAddToCart(e, {
                                             _id: 'featured_chicken_avakai',
                                             name: 'Chicken Avakai From Andhra',
                                             price: 349,
-                                            image: 'https://images.unsplash.com/photo-1599305090598-fe179d501227?w=800&auto=format&fit=crop&q=60',
+                                            image: '/images/non_veg_pickles.png',
                                             category: 'Non-Veg Pickles',
                                             countInStock: 10
                                         })}
                                     >
-                                        Add to Cart
+                                        Add to Basket
                                     </button>
                                 </div>
                             </div>
@@ -363,44 +492,52 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* 4. Category Rows */}
+            {/* 4. Category Rows - Refined Titles */}
             <CategoryRow title="Veg Pickles" products={vegPickles} loading={loading} addToCartHandler={handleAddToCart} />
             <CategoryRow title="Non-Veg Pickles" products={nonVegPickles} loading={loading} addToCartHandler={handleAddToCart} />
             <CategoryRow title="Podis" products={podis} loading={loading} addToCartHandler={handleAddToCart} />
             <CategoryRow title="Sweets" products={sweets} loading={loading} addToCartHandler={handleAddToCart} />
-            <CategoryRow title="Hot Snacks" products={snacks} loading={loading} addToCartHandler={handleAddToCart} />
+            <CategoryRow title="Hot Snacks" products={snacks} loading={loading} addToCartHandler={handleAddToCart} highlight={true} />
             <CategoryRow title="Vadiyalu" products={vadiyalu} loading={loading} addToCartHandler={handleAddToCart} />
 
             {cartItems.length > 0 && (
-                <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4 px-8 z-50 flex justify-between items-center animate-slideUp">
-                    <div>
-                        <p className="text-gray-600 text-sm">Total Items</p>
-                        <p className="text-xl font-bold text-gray-900">{cartItems.reduce((acc, item) => acc + item.qty, 0)} Items</p>
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] md:w-auto bg-dark/90 backdrop-blur-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] p-6 px-10 rounded-[2rem] z-50 flex justify-between items-center animate-slideUp gap-12">
+                    <div className="hidden sm:block">
+                        <p className="text-gray-400 text-[10px] uppercase font-black tracking-widest mb-1">Items in Basket</p>
+                        <p className="text-2xl font-black text-white">{cartItems.reduce((acc, item) => acc + item.qty, 0)}</p>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <p className="text-xl font-bold text-primary mr-4">₹{cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}</p>
+                    <div className="flex items-center gap-8">
+                        <div>
+                            <p className="text-gray-400 text-[10px] uppercase font-black tracking-widest mb-1">Estimated Total</p>
+                            <p className="text-2xl font-black text-secondary">₹{cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}</p>
+                        </div>
                         <button
                             onClick={() => navigate('/cart')}
-                            className="bg-primary text-white px-8 py-3 rounded-sm font-bold uppercase tracking-wider hover:bg-red-700 transition shadow-lg"
+                            className="bg-white text-dark hover:bg-secondary px-10 py-4 rounded-full font-black text-[11px] uppercase tracking-[0.3em] transition-all duration-300 shadow-xl active:scale-95 whitespace-nowrap"
                         >
-                            Checkout &rarr;
+                            Proceed to Checkout
                         </button>
                     </div>
                 </div>
             )}
 
-            {/* 6. Testimonials */}
-            <div className="container mx-auto px-4 py-16 pb-24"> {/* Added extra padding bottom for sticky bar */}
-                <h2 className="text-2xl font-bold text-gray-800 mb-8 uppercase tracking-wide border-l-4 border-primary pl-4">Customer Testimonials</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* 6. Testimonials - Premium Layout */}
+            <div className="container mx-auto px-4 py-24 pb-40">
+                <div className="flex flex-col items-center text-center mb-16">
+                    <h2 className="text-4xl font-serif font-black text-light mb-4 tracking-tighter uppercase italic">Words of Love</h2>
+                    <div className="h-1.5 w-24 bg-primary"></div>
+                    <p className="text-gray-500 font-bold uppercase tracking-widest text-xs mt-6">What our community says about us</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                     <TestimonialCard
-                        name="Srinivas"
-                        text="The veg pickles from Godavari Ruchulu are amazing! Reminds me of my grandmother's recipes. The Gongura pickle is specifically outstanding."
+                        name="Srinivas K."
+                        text="The veg pickles from Godavari Ruchulu are amazing! Reminds me of my grandmother's recipes. The Gongura pickle is specifically outstanding and has that authentic stone-ground texture."
                         rating={5}
                     />
                     <TestimonialCard
-                        name="Sunitha"
-                        text="The non-veg pickles are hygiene and tasty! The texture of pieces in Chicken Avakai is just perfect. Will order again!"
+                        name="Sunitha Reddy"
+                        text="The non-veg pickles are hygiene and incredibly tasty! The texture of pieces in Chicken Avakai is just perfect—juicy and well-marinated. Will definitely be a regular customer!"
                         rating={5}
                     />
                 </div>
@@ -412,21 +549,31 @@ const Home = () => {
 
 // --- Helper Components (Internal for now for speed) ---
 
-const CategoryRow = ({ title, products, loading, addToCartHandler }) => (
-    <div className="container mx-auto px-4 py-12 border-b border-gray-100">
-        <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 uppercase tracking-wide">{title}</h2>
-            <Link to="/shop" className="text-sm font-bold text-gray-500 hover:text-primary flex items-center">
-                View all <span className="ml-1 text-lg">›</span>
+const CategoryRow = ({ title, products, loading, addToCartHandler, highlight }) => (
+    <div className={`container mx-auto px-4 py-20 border-b border-white/5 relative ${highlight ? 'bg-primary/5 rounded-[3rem] my-10 border border-primary/20 shadow-[0_0_50px_rgba(239,68,68,0.1)]' : ''}`}>
+        {highlight && (
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-black px-6 py-2 rounded-full uppercase tracking-[0.3em] shadow-2xl z-10">
+                Customer Favorite • Hot & Fresh
+            </div>
+        )}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+            <div>
+                <h2 className="text-2xl font-serif font-black text-light mb-2 tracking-tighter uppercase">
+                    {title} {highlight && <span className="text-primary italic ml-2">Special</span>}
+                </h2>
+                <div className={`h-1 w-12 ${highlight ? 'bg-primary w-24' : 'bg-primary'}`}></div>
+            </div>
+            <Link to="/shop" className="text-[10px] font-black text-gray-500 hover:text-primary uppercase tracking-[0.2em] transition-colors border-b border-transparent hover:border-primary pb-1 flex items-center gap-2">
+                View Collection <span>→</span>
             </Link>
         </div>
 
         {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                {[1, 2, 3, 4].map(i => <div key={i} className="h-80 bg-gray-100 animate-pulse rounded-lg"></div>)}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+                {[1, 2, 3, 4].map(i => <SkeletonCard key={i} />)}
             </div>
         ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
                 {products.map((product) => (
                     <ProductCard
                         key={product._id}
@@ -440,14 +587,20 @@ const CategoryRow = ({ title, products, loading, addToCartHandler }) => (
 );
 
 const TestimonialCard = ({ name, text, rating }) => (
-    <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-        <div className="flex text-secondary mb-4">
+    <div className="bg-dark/40 p-10 rounded-[2rem] shadow-2xl border border-white/5 relative overflow-hidden group hover:-translate-y-2 transition-all duration-500 backdrop-blur-sm">
+        <div className="absolute top-0 left-0 w-2 h-full bg-primary/20 group-hover:bg-primary transition-colors"></div>
+        <div className="flex text-secondary mb-6 text-sm">
             {[...Array(5)].map((_, i) => (
-                <span key={i} className={i < rating ? "text-yellow-400" : "text-gray-300"}>★</span>
+                <span key={i} className={i < rating ? "text-secondary" : "text-gray-700"}>★</span>
             ))}
         </div>
-        <p className="text-gray-600 italic mb-6 leading-relaxed">"{text}"</p>
-        <h4 className="font-bold text-gray-900 uppercase text-sm tracking-wider">- {name}</h4>
+        <p className="text-light font-serif italic mb-8 leading-relaxed text-lg">"{text}"</p>
+        <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center font-black text-primary text-xs uppercase">
+                {name.charAt(0)}
+            </div>
+            <h4 className="font-black text-light uppercase text-xs tracking-[0.2em]">{name}</h4>
+        </div>
     </div>
 );
 

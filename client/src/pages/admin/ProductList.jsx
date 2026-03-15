@@ -79,7 +79,7 @@ const ProductList = () => {
                             <th className="py-2 px-4 border-b">NAME</th>
                             <th className="py-2 px-4 border-b">PRICE</th>
                             <th className="py-2 px-4 border-b">CATEGORY</th>
-                            <th className="py-2 px-4 border-b">BRAND</th>
+                            <th className="py-2 px-4 border-b">STOCK</th>
                             <th className="py-2 px-4 border-b">ACTIONS</th>
                         </tr>
                     </thead>
@@ -90,7 +90,11 @@ const ProductList = () => {
                                 <td className="py-2 px-4 border-b">{product.name}</td>
                                 <td className="py-2 px-4 border-b">₹{product.price}</td>
                                 <td className="py-2 px-4 border-b">{product.category}</td>
-                                <td className="py-2 px-4 border-b">{product.brand}</td>
+                                <td className="py-2 px-4 border-b">
+                                    <span className={`px-2 py-1 rounded-full text-xs font-bold ${product.countInStock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                        {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'} ({product.countInStock})
+                                    </span>
+                                </td>
                                 <td className="py-2 px-4 border-b">
                                     <Link to={`/admin/product/${product._id}/edit`} className="mr-2 text-blue-500 hover:text-blue-700">
                                         <FaEdit />
