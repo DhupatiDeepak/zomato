@@ -28,38 +28,38 @@ const Header = () => {
 
     return (
         <header className="bg-dark/80 backdrop-blur-xl sticky top-0 z-50 font-sans border-b border-white/5 transition-all duration-300">
-            {/* Top Bar - More refined */}
-            <div className="bg-primary/95 text-white text-[10px] md:text-xs py-1.5 text-center font-semibold tracking-[0.2em] uppercase">
+            {/* Top Bar - More refined & compact */}
+            <div className="bg-primary/95 text-white text-[9px] md:text-xs py-1 text-center font-semibold tracking-[0.2em] uppercase">
                 Free Delivery on orders above ₹1000 | Authentic Traditional Tastes
             </div>
 
-            {/* Main Header */}
-            <div className="container mx-auto px-4 md:px-8 py-5">
+            {/* Main Header - Compact padding */}
+            <div className="container mx-auto px-4 md:px-8 py-3">
                 <div className="flex items-center justify-between gap-4">
-                    {/* Logo */}
+                    {/* Logo - Scaled down */}
                     <Link to="/" className="flex-shrink-0 group">
-                        <div className="text-2xl md:text-3xl font-serif font-black text-light tracking-tighter transition-transform group-hover:scale-[1.02]">
+                        <div className="text-xl md:text-2xl font-serif font-black text-light tracking-tighter transition-transform group-hover:scale-[1.02]">
                             <span className="text-primary italic">Godavari</span> <span>Ruchulu</span>
                         </div>
                     </Link>
 
                     {/* Search Bar */}
-                    <div className="hidden md:flex flex-grow max-w-xl mx-8">
+                    <div className="hidden md:flex flex-grow max-w-xl mx-6">
                         <form onSubmit={searchHandler} className="w-full relative group">
                             <input
                                 type="text"
                                 placeholder="Search for pickles, powders, and more..."
-                                className="w-full pl-5 pr-12 py-3 border border-white/10 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white/5 text-sm transition-all duration-300 group-hover:bg-white/10 group-hover:shadow-lg text-light placeholder-gray-500"
+                                className="w-full pl-5 pr-12 py-2 border border-white/10 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white/5 text-sm transition-all duration-300 group-hover:bg-white/10 group-hover:shadow-lg text-light placeholder-gray-500"
                                 onChange={(e) => setKeyword(e.target.value)}
                             />
-                            <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-red-700 transition-colors shadow-sm">
-                                <FaSearch size={14} />
+                            <button type="submit" className="absolute right-1.5 top-1/2 -translate-y-1/2 h-7 w-7 flex items-center justify-center rounded-full bg-primary text-white hover:bg-red-700 transition-colors shadow-sm">
+                                <FaSearch size={12} />
                             </button>
                         </form>
                     </div>
 
-                    {/* Icons */}
-                    <div className="flex items-center space-x-6 text-gray-400">
+                    {/* Icons - Compact spacing */}
+                    <div className="flex items-center space-x-4 md:space-x-5 text-gray-400">
                         <Link to="/wishlist" className="relative hover:text-primary transition-all duration-300 transform hover:scale-110 hidden sm:block">
                             <FaHeart className="text-xl" />
                             {wishlistItems.length > 0 && (
@@ -81,7 +81,7 @@ const Header = () => {
                         {isAuthenticated ? (
                             <div className="relative group cursor-pointer">
                                 <div className="flex items-center hover:text-primary transition-all duration-300 transform hover:scale-110">
-                                    <FaUser className="text-xl text-light" />
+                                    <FaUser className="text-lg text-light" />
                                 </div>
                                 {/* Dropdown */}
                                 <div className="absolute right-0 mt-2 w-52 bg-dark border border-white/10 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] py-2 hidden group-hover:block transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 z-50 overflow-hidden backdrop-blur-xl">
@@ -97,18 +97,18 @@ const Header = () => {
                                 </div>
                             </div>
                         ) : (
-                            <Link to="/login" className="bg-white/10 text-white hover:bg-primary px-7 py-2.5 rounded-full font-black text-[13px] tracking-widest transition-all duration-300 border border-white/10 active:scale-95 shadow-lg">LOGIN</Link>
+                            <Link to="/login" className="bg-white/10 text-white hover:bg-primary px-5 py-2 rounded-full font-black text-[11px] tracking-widest transition-all duration-300 border border-white/10 active:scale-95 shadow-lg">LOGIN</Link>
                         )}
 
                         {/* Mobile Menu Toggle */}
-                        <button className="md:hidden text-2xl hover:text-primary transition-colors text-light">
+                        <button className="md:hidden text-xl hover:text-primary transition-colors text-light">
                             <FaBars />
                         </button>
                     </div>
                 </div>
 
-                {/* Mobile Search */}
-                <div className="md:hidden mt-5">
+                {/* Mobile Search - Compact margin */}
+                <div className="md:hidden mt-3">
                     <form onSubmit={searchHandler} className="relative">
                         <input
                             type="text"
@@ -123,10 +123,10 @@ const Header = () => {
                 </div>
             </div>
 
-            {/* Navigation Bar */}
+            {/* Navigation Bar - Compact spacing */}
             <nav className="border-t border-white/5 hidden md:block">
                 <div className="container mx-auto px-8">
-                    <ul className="flex items-center justify-center space-x-10 py-5 text-[13px] font-black uppercase tracking-[0.2em] text-white">
+                    <ul className="flex items-center justify-center space-x-8 py-3.5 text-[12px] font-black uppercase tracking-[0.2em] text-white">
                         <li><Link to="/" className="hover:text-primary transition-all duration-300 relative group">Home<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span></Link></li>
                         <li><Link to="/shop" className="hover:text-primary transition-all duration-300 relative group">Shop<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span></Link></li>
                         <li><Link to="/shop?category=Veg%20Pickles" className="hover:text-primary transition-all duration-300 relative group">Veg Pickles<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span></Link></li>

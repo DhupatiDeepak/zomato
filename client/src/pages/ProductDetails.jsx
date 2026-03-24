@@ -39,8 +39,8 @@ const ProductDetails = () => {
 
     return (
 
-        <div className="container mx-auto px-6 py-12">
-            <Link to="/" className="inline-flex items-center text-gray-600 hover:text-primary mb-8 transition duration-300">
+        <div className="container mx-auto px-4 md:px-6 py-8 md:py-10">
+            <Link to="/" className="inline-flex items-center text-gray-500 hover:text-primary mb-6 transition duration-300 text-sm">
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 Back to Shopping
             </Link>
@@ -55,7 +55,7 @@ const ProductDetails = () => {
                         />
                     </div>
 
-                    <div className="p-8 md:p-12 flex flex-col justify-center">
+                    <div className="p-6 md:p-10 flex flex-col justify-center">
                         <div className="flex items-center space-x-2 mb-4">
                             <span className="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
                                 {product.category || 'Traditional'}
@@ -67,7 +67,7 @@ const ProductDetails = () => {
                             )}
                         </div>
 
-                        <h2 className="text-4xl font-serif font-bold mb-4 text-gray-900 leading-tight">
+                        <h2 className="text-3xl md:text-4xl font-serif font-bold mb-3 text-gray-900 leading-tight">
                             {product.name}
                         </h2>
 
@@ -80,9 +80,9 @@ const ProductDetails = () => {
                             <span className="text-gray-500 text-sm font-medium">({product.numReviews} customer reviews)</span>
                         </div>
 
-                        <p className="text-4xl font-bold text-primary mb-6">₹{product.price}</p>
+                        <p className="text-3xl font-bold text-primary mb-5">₹{product.price}</p>
 
-                        <p className="text-gray-600 mb-8 leading-relaxed text-lg">
+                        <p className="text-gray-600 mb-6 leading-relaxed text-base">
                             {product.description}
                         </p>
 
@@ -111,7 +111,7 @@ const ProductDetails = () => {
 
                             <button
                                 onClick={addToCartHandler}
-                                className={`w-full md:w-auto bg-gray-900 text-white font-bold py-4 px-10 rounded-full hover:bg-primary transition duration-300 shadow-lg transform hover:-translate-y-1 flex items-center justify-center ${product.countInStock === 0 ? 'opacity-50 cursor-not-allowed hover:bg-gray-900 hover:translate-y-0' : ''}`}
+                                className={`w-full md:w-auto bg-gray-900 text-white font-bold py-3.5 px-10 rounded-full hover:bg-primary transition duration-300 shadow-lg transform hover:-translate-y-1 flex items-center justify-center ${product.countInStock === 0 ? 'opacity-50 cursor-not-allowed hover:bg-gray-900 hover:translate-y-0' : ''}`}
                                 disabled={product.countInStock === 0}
                             >
                                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>

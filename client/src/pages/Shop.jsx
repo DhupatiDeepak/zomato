@@ -267,14 +267,14 @@ const Shop = () => {
     const displayProducts = getFilteredProducts();
 
     return (
-        <div className="bg-dark min-h-screen py-12">
+        <div className="bg-dark min-h-screen py-8 md:py-10">
             <div className="container mx-auto px-4">
-                <h1 className="text-4xl font-serif font-black text-light mb-12 uppercase text-center tracking-tighter">
+                <h1 className="text-3xl md:text-4xl font-serif font-black text-light mb-8 md:mb-10 uppercase text-center tracking-tighter">
                     {categoryFilter ? `${categoryFilter}` : 'All Products'}
                 </h1>
 
                 {loading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
                         {[1, 2, 3, 4, 5, 6, 7, 8].map(i => <SkeletonCard key={i} />)}
                     </div>
                 ) : (
@@ -284,7 +284,7 @@ const Shop = () => {
                                 <h2 className="text-2xl text-gray-500 font-bold uppercase tracking-widest">No products found.</h2>
                             </div>
                         ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
                             {displayProducts.map((product) => (
                                 <ProductCard
                                     key={product._id}
