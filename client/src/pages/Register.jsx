@@ -30,7 +30,7 @@ const Register = () => {
 
         dispatch(loginStart());
         try {
-            const res = await axios.post('http://localhost:5000/api/users/register', { name, email, password });
+            const res = await axios.post('/api/users/register', { name, email, password });
             dispatch(loginSuccess(res.data)); // Auto-login on register
             toast.success('Registration Successful');
         } catch (err) {

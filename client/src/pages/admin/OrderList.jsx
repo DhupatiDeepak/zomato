@@ -19,7 +19,7 @@ const OrderList = () => {
                     const config = {
                         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
                     };
-                    const { data } = await axios.get('http://localhost:5000/api/orders', config);
+                    const { data } = await axios.get('/api/orders', config);
                     setOrders(data);
                     setLoading(false);
                 } catch (error) {

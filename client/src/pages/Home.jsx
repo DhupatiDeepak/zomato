@@ -21,7 +21,7 @@ const Home = () => {
             const timeoutId = setTimeout(() => controller.abort(), 3000);
 
             try {
-                const { data } = await axios.get('http://localhost:5000/api/products', {
+                const { data } = await axios.get('/api/products', {
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);

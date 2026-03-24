@@ -23,7 +23,7 @@ const Login = () => {
         e.preventDefault();
         dispatch(loginStart());
         try {
-            const res = await axios.post('http://localhost:5000/api/users/login', { email, password });
+            const res = await axios.post('/api/users/login', { email, password });
             dispatch(loginSuccess(res.data));
             toast.success('Login Successful');
         } catch (err) {

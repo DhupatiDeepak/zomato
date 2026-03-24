@@ -15,7 +15,7 @@ const ProductList = () => {
 
     const fetchProducts = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/products');
+            const { data } = await axios.get('/api/products');
             setProducts(data);
             setLoading(false);
         } catch (error) {
@@ -38,7 +38,7 @@ const ProductList = () => {
                 const config = {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
                 };
-                await axios.delete(`http://localhost:5000/api/products/${id}`, config);
+                await axios.delete(`/api/products/${id}`, config);
                 toast.success('Product deleted');
                 fetchProducts();
             } catch (error) {
@@ -52,7 +52,7 @@ const ProductList = () => {
             const config = {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             };
-            const { data } = await axios.post(`http://localhost:5000/api/products`, {}, config);
+            const { data } = await axios.post(`/api/products`, {}, config);
             toast.success('Product created');
             navigate(`/admin/product/${data._id}/edit`);
         } catch (error) {

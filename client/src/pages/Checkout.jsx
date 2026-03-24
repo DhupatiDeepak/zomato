@@ -43,7 +43,7 @@ const Checkout = () => {
             // I will use localStorage for now as simple approach, matching authSlice logic.
 
             const { data } = await axios.post(
-                'http://localhost:5000/api/orders',
+                '/api/orders',
                 {
                     orderItems: cartItems,
                     shippingAddress: { address, city, postalCode, country },

@@ -11,7 +11,7 @@ const Order = () => {
 
     useEffect(() => {
         const addRazorpayScript = async () => {
-            const { data: clientId } = await axios.get('http://localhost:5000/api/config/razorpay');
+            const { data: clientId } = await axios.get('/api/config/razorpay');
             const script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = 'https://checkout.razorpay.com/v1/checkout.js';
@@ -29,7 +29,7 @@ const Order = () => {
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
                     },
                 };
-                const { data } = await axios.get(`http://localhost:5000/api/orders/${id}`, config);
+                const { data } = await axios.get(`/api/orders/${id}`, config);
                 setOrder(data);
                 setLoading(false);
 
@@ -55,8 +55,8 @@ const Order = () => {
         };
 
         // Create Order on Razorpay
-        const { data: { key } } = await axios.get('http://localhost:5000/api/config/razorpay');
-        const { data: orderData } = await axios.post('http://localhost:5000/api/orders/razorpay', { amount: order.totalPrice }, config);
+        const { data: { key } } = await axios.get('/api/config/razorpay');
+        const { data: orderData } = await axios.post('/api/orders/razorpay', { amount: order.totalPrice }, config);
 
         const options = {
             key: key,
@@ -67,7 +67,7 @@ const Order = () => {
             order_id: orderData.id,
             handler: async function (response) {
                 try {
-                    await axios.put(`http://localhost:5000/api/orders/${order._id}/pay`, {
+                    await axios.put(`/api/orders/${order._id}/pay`, {
                         paymentResult: {
                             id: response.razorpay_payment_id,
                             status: 'success',

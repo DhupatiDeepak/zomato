@@ -1,0 +1,14 @@
+{
+  "name": "zomato-monorepo",
+  "version": "1.0.0",
+  "description": "Zomato-like application with React and Node.js",
+  "type": "module",
+  "scripts": {
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "dev": "npx concurrently \"cd server && npm run dev\" \"cd client && npm run dev\""
+  },
+  "author": "",
+  "license": "ISC"
+}

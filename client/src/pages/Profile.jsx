@@ -31,7 +31,7 @@ const Profile = () => {
             const config = {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             };
-            const { data } = await axios.get('http://localhost:5000/api/orders/myorders', config);
+            const { data } = await axios.get('/api/orders/myorders', config);
             setOrders(data);
         } catch (error) {
             console.error(error);

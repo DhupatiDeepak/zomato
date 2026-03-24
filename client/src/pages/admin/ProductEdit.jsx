@@ -19,7 +19,7 @@ const ProductEdit = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const { data } = await axios.get(`http://localhost:5000/api/products/${id}`);
+                const { data } = await axios.get(`/api/products/${id}`);
                 setName(data.name);
                 setPrice(data.price);
                 setImage(data.image);
@@ -48,7 +48,7 @@ const ProductEdit = () => {
                 },
             };
 
-            const { data } = await axios.post('http://localhost:5000/api/upload', formData, config);
+            const { data } = await axios.post('/api/upload', formData, config);
 
             setImage(data.image);
             setUploading(false);
@@ -69,7 +69,7 @@ const ProductEdit = () => {
                     Authorization: `Bearer ${localStorage.getItem('token')}` 
                 },
             };
-            await axios.put(`http://localhost:5000/api/products/${id}`, {
+            await axios.put(`/api/products/${id}`, {
                 name, price, image, brand, category, countInStock, description
             }, config);
             toast.success('Product Updated');
