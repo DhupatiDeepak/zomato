@@ -62,7 +62,7 @@ const Order = () => {
             key: key,
             amount: orderData.amount,
             currency: "INR",
-            name: "Godavari Ruchulu",
+            name: "Ronanki hot chips",
             description: "Order Payment",
             order_id: orderData.id,
             handler: async function (response) {

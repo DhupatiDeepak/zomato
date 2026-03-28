@@ -26,7 +26,7 @@ const Shop = () => {
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);
-                setProducts(data);
+                setProducts(Array.isArray(data) ? data : []);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -247,7 +247,7 @@ const Shop = () => {
     ];
 
     const getFilteredProducts = () => {
-        let allProducts = products.length > 0 ? products : dummyData;
+        let allProducts = Array.isArray(products) && products.length > 0 ? products : dummyData;
 
         if (categoryFilter) {
             // Fuzzy match for category (e.g. 'veg' matches 'Veg Pickles')
@@ -280,8 +280,8 @@ const Shop = () => {
                 ) : (
                     <>
                         {displayProducts.length === 0 ? (
-                            <div className="text-center py-20">
-                                <h2 className="text-2xl text-gray-500 font-bold uppercase tracking-widest">No products found.</h2>
+                            <div className="text-center py-20 px-4">
+                                <h2 className="text-xl md:text-2xl text-gray-500 font-bold uppercase tracking-widest whitespace-normal md:whitespace-nowrap">No products found.</h2>
                             </div>
                         ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">

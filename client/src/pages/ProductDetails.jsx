@@ -55,8 +55,8 @@ const ProductDetails = () => {
                         />
                     </div>
 
-                    <div className="p-6 md:p-10 flex flex-col justify-center">
-                        <div className="flex items-center space-x-2 mb-4">
+                    <div className="p-6 md:p-10 flex flex-col justify-center items-center md:items-start text-center md:text-left">
+                        <div className="flex items-center justify-center md:justify-start space-x-2 mb-4">
                             <span className="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
                                 {product.category || 'Traditional'}
                             </span>
@@ -71,7 +71,7 @@ const ProductDetails = () => {
                             {product.name}
                         </h2>
 
-                        <div className="flex items-center mb-6 space-x-4">
+                        <div className="flex items-center justify-center md:justify-start mb-6 space-x-4">
                             <div className="flex text-yellow-400 text-lg">
                                 {[...Array(5)].map((_, i) => (
                                     <FaStar key={i} className={i < product.rating ? 'text-yellow-400' : 'text-gray-300'} />
@@ -86,9 +86,9 @@ const ProductDetails = () => {
                             {product.description}
                         </p>
 
-                        <div className="border-t border-gray-100 pt-8 mt-auto">
+                        <div className="border-t border-gray-100 pt-8 mt-auto w-full flex flex-col items-center md:items-start">
                             {product.countInStock > 0 && (
-                                <div className="flex items-center mb-6">
+                                <div className="flex items-center justify-center md:justify-start mb-6">
                                     <span className="font-semibold text-gray-700 mr-4">Quantity:</span>
                                     <div className="relative">
                                         <select

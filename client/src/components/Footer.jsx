@@ -9,7 +9,7 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                     {/* About */}
                     <div>
-                        <h3 className="text-2xl font-serif font-bold text-white mb-6">Godavari Ruchulu</h3>
+                        <h3 className="text-2xl font-serif font-bold text-white mb-6">Ronanki hot chips</h3>
                         <p className="text-gray-400 leading-relaxed mb-6">
                             Authentic traditional pickles and powders from the heart of Godavari. Made with love, preserving the taste of our ancestors.
                         </p>
@@ -57,14 +57,14 @@ const Footer = () => {
                             </li>
                             <li className="flex items-center">
                                 <FaEnvelope className="mr-3 text-primary" />
-                                <span>hello@godavariruchulu.com</span>
+                                <span>hello@ronankihotchips.com</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
                 <div className="border-t border-gray-800 pt-8 mt-8 text-center text-gray-500 text-sm">
-                    <p>&copy; {new Date().getFullYear()} Godavari Ruchulu. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Ronanki hot chips. All rights reserved.</p>
                 </div>
             </div>
         </footer>

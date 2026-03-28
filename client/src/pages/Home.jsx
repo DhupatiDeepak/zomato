@@ -14,6 +14,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { cartItems } = useSelector((state) => state.cart);
+    const { user, isAuthenticated } = useSelector((state) => state.auth);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -25,7 +26,7 @@ const Home = () => {
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);
-                setProducts(data);
+                setProducts(Array.isArray(data) ? data : []);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -49,7 +50,7 @@ const Home = () => {
             image: '/images/hero.png',
             subtitle: 'Est. 1995 • Handcrafted Tradition',
             title: 'SPICY PERFECTION',
-            description: 'Experience the raw, unadulterated flavors of Godavari. Made with sun-dried ingredients and time-honored family secrets.'
+            description: 'Experience the raw, unadulterated flavors of Ronanki hot chips. Made with sun-dried ingredients and time-honored family secrets.'
         },
         {
             image: '/images/veg_pickles.png',
@@ -264,7 +265,7 @@ const Home = () => {
         },
         {
             _id: 'd19b',
-            name: 'Classic Godavari Chekarlu',
+            name: 'Classic Ronanki Chekarlu',
             image: '/images/brown_chekarlu.png',
             price: 260,
             category: 'Hot Snacks',
@@ -296,12 +297,16 @@ const Home = () => {
 
     // Helper functions to filter products for the specific rows in reference
     const getProductsByCategory = (category) => {
-        // Try to filter real products first
-        let filtered = products.filter(p => p.category?.toLowerCase().includes(category.toLowerCase()));
-
+        // Try to filter real products first safely
+        let filtered = Array.isArray(products) 
+            ? products.filter(p => p && p.category?.toLowerCase().includes(category.toLowerCase()))
+            : [];
+        
         // If no real products, fall back to dummy data for that category
         if (filtered.length === 0) {
-            filtered = dummyData.filter(p => p.category?.toLowerCase().includes(category.toLowerCase()));
+            filtered = Array.isArray(dummyData) 
+                ? dummyData.filter(p => p && p.category?.toLowerCase().includes(category.toLowerCase()))
+                : [];
         }
 
         return filtered.slice(0, 4);
@@ -317,6 +322,19 @@ const Home = () => {
 
     return (
         <div className="bg-dark min-h-screen pb-20 relative">
+            {/* Mobile-Only Admin Quick Access Banner */}
+            {isAuthenticated && user?.isAdmin && (
+                <div className="md:hidden bg-[#0F172A] border-b border-primary/20 p-4 animate-pulse">
+                    <button 
+                        onClick={() => navigate('/admin/dashboard')}
+                        className="w-full bg-primary/10 border border-primary text-primary py-3 rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(239,68,68,0.2)]"
+                    >
+                        ⚡ Access Admin Dashboard
+                    </button>
+                    <p className="text-[9px] text-gray-500 text-center mt-2 font-bold uppercase tracking-widest">Administrator Quick Access</p>
+                </div>
+            )}
+
             {/* 1. Hero Section - Premium Cinematic Slideshow - Compact Height */}
             <div className="relative w-full h-[450px] md:h-[550px] bg-dark overflow-hidden group">
                 {slides.map((slide, index) => (
@@ -391,10 +409,9 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* 2. Top Categories Section - Premium Compact Circles */}
             <div className="container mx-auto px-4 py-12 md:py-16">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
-                    <div>
+                <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 gap-4 text-center md:text-left">
+                    <div className="flex flex-col items-center md:items-start">
                         <h2 className="text-2xl md:text-3xl font-serif font-black text-light mb-1.5 tracking-tighter uppercase">Taste Categories</h2>
                         <div className="h-1.5 w-16 bg-primary"></div>
                     </div>
@@ -428,11 +445,10 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* 3. Featured Product Section (Chicken Avakaya) - Modern Compact Card */}
             <div className="bg-dark/40 py-12 md:py-16">
                 <div className="container mx-auto px-4">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
-                        <div>
+                    <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 gap-4 text-center md:text-left">
+                        <div className="flex flex-col items-center md:items-start">
                             <h2 className="text-2xl md:text-3xl font-serif font-black text-light mb-1.5 tracking-tighter uppercase">Signature Delicacy</h2>
                             <div className="h-1.5 w-16 bg-primary"></div>
                         </div>
@@ -454,19 +470,19 @@ const Home = () => {
                                         Chef's Choice
                                     </span>
                                 </div>
-                            </div>                            <div className="md:w-1/2 p-8 md:p-14 flex flex-col justify-center bg-dark/20 backdrop-blur-sm">
+                            </div>                            <div className="md:w-1/2 p-8 md:p-14 flex flex-col justify-center items-center md:items-start text-center md:text-left bg-dark/20 backdrop-blur-sm">
                                 <h3 className="text-3xl md:text-4xl font-serif font-black text-light mb-3 leading-tight tracking-tighter">Chicken Avakai <br /><span className="text-primary italic">From Andhra</span></h3>
-                                <div className="flex items-center gap-3 mb-6">
+                                <div className="flex items-center justify-center md:justify-start gap-3 mb-6">
                                     <span className="text-3xl font-black text-light">₹349</span>
                                     <span className="text-base text-gray-500 line-through font-medium">₹499</span>
                                     <span className="text-primary text-[10px] font-black bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full uppercase tracking-wider">30% OFF</span>
                                 </div>
 
-                                <p className="text-gray-400 mb-8 leading-relaxed font-medium text-base italic">
-                                    "Experience the authentic spicy punch of Godavari Chicken Avakai. Made with premium chicken chunks, traditional spices, and cold-pressed groundnut oil."
+                                <p className="text-gray-400 mb-8 leading-relaxed font-medium text-base italic max-w-md">
+                                    "Experience the authentic spicy punch of Ronanki Chicken Avakai. Made with premium chicken chunks, traditional spices, and cold-pressed groundnut oil."
                                 </p>
 
-                                <div className="flex flex-col sm:flex-row gap-5">
+                                <div className="flex flex-col sm:flex-row gap-5 items-center justify-center md:justify-start">
                                     <div className="bg-white/5 border border-white/10 rounded-full flex items-center justify-between px-5 py-3 w-36">
                                         <button className="text-gray-500 hover:text-primary font-black transition-colors">-</button>
                                         <span className="font-black text-light text-sm">1 KG</span>
@@ -532,7 +548,7 @@ const Home = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <TestimonialCard
                         name="Srinivas K."
-                        text="The veg pickles from Godavari Ruchulu are amazing! Reminds me of my grandmother's recipes. The Gongura pickle is specifically outstanding and has that authentic stone-ground texture."
+                        text="The veg pickles from Ronanki hot chips are amazing! Reminds me of my grandmother's recipes. The Gongura pickle is specifically outstanding and has that authentic stone-ground texture."
                         rating={5}
                     />
                     <TestimonialCard
@@ -556,8 +572,8 @@ const CategoryRow = ({ title, products, loading, addToCartHandler, highlight }) 
                 Customer Favorite • Hot & Fresh
             </div>
         )}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
-            <div>
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 gap-4 text-center md:text-left">
+            <div className="flex flex-col items-center md:items-start">
                 <h2 className="text-xl md:text-2xl font-serif font-black text-light mb-1.5 tracking-tighter uppercase">
                     {title} {highlight && <span className="text-primary italic ml-2">Special</span>}
                 </h2>
